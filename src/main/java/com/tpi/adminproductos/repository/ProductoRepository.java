@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    // No necesitas implementar métodos aquí
+    // Aquí puedes agregar métodos personalizados como:
+    // Producto findBySku(String sku);
 }
