@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Importación - Body Painting</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Módulo de Importación - Grupo 3 (Santiago)</h1>
+
+    <div class="box">
+        <h2>Importar Productos (CSV o XML)</h2>
+        <p>Seleccioná un archivo con la estructura estricta para impactar en el sistema.</p>
+        <input type="file" id="fileInput" accept=".csv, .xml" />
+        <button class="btn" id="btnProcesar">Procesar Archivo</button>
+        <p id="mensajeEstado"></p>
+    </div>
+
+    <div class="box">
+        <h2>Productos Cargados en Sistema</h2>
+        <button class="btn btn-success" id="btnRefrescar">Refrescar Tabla</button>
+        <button class="btn btn-danger" id="btnLimpiar">Vaciar Todo</button>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Nombre</th>
+                    <th>Precio ($)</th>
+                    <th>Stock</th>
+                    <th>URL Imagen</th>
+                </tr>
+            </thead>
+            <tbody id="tablaProductos">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
