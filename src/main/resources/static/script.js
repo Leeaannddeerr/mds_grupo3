@@ -1,4 +1,9 @@
 const STORAGE_KEY = 'productos_body_painting';
+const botonActualizar = document.querySelector(".btn-claro");
+
+botonActualizar.addEventListener("click", () => {
+    alert("Datos cargados en servidor");
+});
 
 function normalizarSku(valor) {
     return String(valor)
@@ -342,4 +347,6 @@ function eliminarImagenPorSku(sku) {
         productos[index].urlImagen = "";
         guardarProductos(productos);
     }
+
+
 }
