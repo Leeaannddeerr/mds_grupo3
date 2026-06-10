@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Importación - Body Painting</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos básicos para la miniatura de la imagen */
+        .img-thumbnail {
+            width: 50px; 
+            height: 50px; 
+            object-fit: cover; 
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,22 +29,32 @@
     </div>
 
     <div class="box">
+        <h2>Cargar Imagen a Producto (Leandro)</h2>
+        <p>Asociá una imagen <strong>(Solo JPG o PNG)</strong> a un producto existente usando su SKU.</p>
+        <input type="text" id="skuImagen" placeholder="Ingrese el SKU del producto" style="margin-bottom: 10px; padding: 5px; width: 200px;" />
+        <br>
+        <input type="file" id="fileImagen" accept=".jpg, .jpeg, .png" />
+        <button class="btn" id="btnSubirImagen" style="background-color: #007bff; color: white;">Subir y Asociar Imagen</button>
+        <p id="mensajeImagen"></p>
+    </div>
+
+    <div class="box">
         <h2>Productos Cargados en Sistema</h2>
-        <button class="btn btn-success" id="btnRefrescar">Refrescar Tabla</button>
-        <button class="btn btn-danger" id="btnLimpiar">Vaciar Todo</button>
+        <button class="btn btn-success" id="btnRefrescar" style="background-color: #28a745; color: white;">Refrescar Tabla</button>
+        <button class="btn btn-danger" id="btnLimpiar" style="background-color: #dc3545; color: white;">Vaciar Todo</button>
         
-        <table>
+        <table style="width: 100%; margin-top: 15px; border-collapse: collapse; text-align: left;">
             <thead>
-                <tr>
+                <tr style="border-bottom: 2px solid #ccc;">
                     <th>SKU</th>
                     <th>Nombre</th>
                     <th>Precio ($)</th>
                     <th>Stock</th>
-                    <th>URL Imagen</th>
+                    <th>Imagen</th>
                 </tr>
             </thead>
             <tbody id="tablaProductos">
-                </tbody>
+            </tbody>
         </table>
     </div>
 

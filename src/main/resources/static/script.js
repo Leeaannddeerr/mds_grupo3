@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('btnProcesar').addEventListener('click', procesarArchivo);
     document.getElementById('btnRefrescar').addEventListener('click', renderizarTabla);
     document.getElementById('btnLimpiar').addEventListener('click', limpiarStorage);
+    
+    // Escuchador para el botón de Leandro
+    document.getElementById('btnSubirImagen').addEventListener('click', procesarSubidaImagen);
 });
 
 // OBTENER PRODUCTOS DESDE LOCALSTORAGE
@@ -24,13 +27,13 @@ function guardarProductos(productos) {
     renderizarTabla();
 }
 
-// CONTROLADOR PRINCIPAL DE ARCHIVOS
+// CONTROLADOR PRINCIPAL DE ARCHIVOS (Santiago)
 function procesarArchivo() {
     const fileInput = document.getElementById('fileInput');
     const mensaje = document.getElementById('mensajeEstado');
     
     if (fileInput.files.length === 0) {
-        mensaje.innerHTML = "<span class='error'>Por favor, seleccioná un archivo primero.</span>";
+        mensaje.innerHTML = "<span class='error' style='color:red;'>Por favor, seleccioná un archivo primero.</span>";
         return;
     }
 
@@ -45,21 +48,21 @@ function procesarArchivo() {
         } else if (archivo.name.endsWith('.xml')) {
             leerXML(contenido);
         } else {
-            mensaje.innerHTML = "<span class='error'>Formato no soportado.</span>";
+            mensaje.innerHTML = "<span class='error' style='color:red;'>Formato no soportado.</span>";
         }
     };
 
     lector.readAsText(archivo);
 }
 
-// PROCESAR FORMATO CSV (Sin encabezado: sku,nombre,precio,stock)
+// PROCESAR FORMATO CSV
 function leerCSV(texto) {
     const lineas = texto.split(/\r?\n/);
     const productosExistentes = obtenerProductos();
     let importados = 0;
 
     lineas.forEach(linea => {
-        if (linea.trim() === "") return; // Ignorar líneas vacías
+        if (linea.trim() === "") return; 
         
         const columnas = linea.split(',');
         
@@ -69,10 +72,9 @@ function leerCSV(texto) {
                 nombre: columnas[1].trim(),
                 precio: parseFloat(columnas[2].trim()) || 0.0,
                 stock: parseInt(columnas[3].trim()) || 0,
-                urlImagen: "" // Espacio para que Leandro cargue imágenes después
+                urlImagen: "" 
             };
 
-            // Evitar duplicados por SKU (si ya existe, lo actualiza)
             const index = productosExistentes.findIndex(p => p.sku === nuevoProducto.sku);
             if (index !== -1) {
                 productosExistentes[index] = nuevoProducto; 
@@ -84,15 +86,14 @@ function leerCSV(texto) {
     });
 
     guardarProductos(productosExistentes);
-    document.getElementById('mensajeEstado').innerHTML = `<strong>Éxito:</strong> Se procesaron ${importados} productos desde el CSV.`;
+    document.getElementById('mensajeEstado').innerHTML = `<strong style='color:green;'>Éxito:</strong> Se procesaron ${importados} productos desde el CSV.`;
 }
 
-// PROCESAR FORMATO XML (Estructura estricta)
+// PROCESAR FORMATO XML
 function leerXML(texto) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(texto, "text/xml");
     
-    // Nodos según la documentación preliminar
     const codigos = xmlDoc.getElementsByTagName("CODIGO");
     const nombres = xmlDoc.getElementsByTagName("NOMBRE");
     const precios = xmlDoc.getElementsByTagName("PRECIO");
@@ -120,8 +121,71 @@ function leerXML(texto) {
     }
 
     guardarProductos(productosExistentes);
-    document.getElementById('mensajeEstado').innerHTML = `<strong>Éxito:</strong> Se procesaron ${importados} productos desde el XML.`;
+    document.getElementById('mensajeEstado').innerHTML = `<strong style='color:green;'>Éxito:</strong> Se procesaron ${importados} productos desde el XML.`;
 }
+
+// ==========================================
+// MÓDULO DE LEANDRO - CARGA DE IMÁGENES
+// ==========================================
+function procesarSubidaImagen() {
+    const skuInput = document.getElementById('skuImagen').value.trim();
+    const fileInput = document.getElementById('fileImagen');
+    const mensaje = document.getElementById('mensajeImagen');
+
+    // Validar que ingresó un SKU
+    if (!skuInput) {
+        mensaje.innerHTML = "<span style='color:red;'>Debes ingresar el SKU del producto.</span>";
+        return;
+    }
+
+    // Validar que seleccionó un archivo
+    if (fileInput.files.length === 0) {
+        mensaje.innerHTML = "<span style='color:red;'>Debes seleccionar una imagen.</span>";
+        return;
+    }
+
+    const archivo = fileInput.files[0];
+
+    // TAREA SCRUM-37: Permitir solo archivos JPG y PNG
+    const tiposPermitidos = ['image/jpeg', 'image/png'];
+    if (!tiposPermitidos.includes(archivo.type)) {
+        mensaje.innerHTML = "<span style='color:red;'>Error: Solo se permiten archivos en formato JPG o PNG.</span>";
+        return;
+    }
+
+    // Buscar el producto en la base simulada (LocalStorage)
+    const productos = obtenerProductos();
+    const index = productos.findIndex(p => p.sku === skuInput);
+
+    if (index === -1) {
+        mensaje.innerHTML = `<span style='color:red;'>Error: No se encontró ningún producto con el SKU "${skuInput}".</span>`;
+        return;
+    }
+
+    // TAREA SCRUM-38 & SCRUM-39: Guardar localmente y asociar
+    // Leemos la imagen como DataURL (Base64) para simular el almacenamiento local
+    const lector = new FileReader();
+    lector.onload = function(e) {
+        const base64Imagen = e.target.result;
+        
+        // Asociamos la imagen al producto
+        productos[index].urlImagen = base64Imagen;
+        
+        // Guardamos los cambios
+        guardarProductos(productos);
+
+        // TAREA SCRUM-40: Feedback de prueba exitosa
+        mensaje.innerHTML = `<strong style='color:green;'>Éxito:</strong> Imagen vinculada correctamente al producto ${skuInput}.`;
+        
+        // Limpiamos los inputs
+        document.getElementById('skuImagen').value = '';
+        fileInput.value = '';
+    };
+
+    lector.readAsDataURL(archivo);
+}
+// ==========================================
+
 
 // MOSTRAR EN TABLA HTML
 function renderizarTabla() {
@@ -130,18 +194,24 @@ function renderizarTabla() {
     tbody.innerHTML = "";
 
     if (productos.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No hay productos cargados.</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding-top: 10px;'>No hay productos cargados.</td></tr>";
         return;
     }
 
     productos.forEach(p => {
+        // Verificar si hay imagen para mostrar o texto por defecto
+        let contenidoImagen = `<em>Pendiente</em>`;
+        if (p.urlImagen && p.urlImagen !== "") {
+            contenidoImagen = `<img src="${p.urlImagen}" alt="${p.nombre}" class="img-thumbnail">`;
+        }
+
         const fila = document.createElement('tr');
         fila.innerHTML = `
-            <td><strong>${p.sku}</strong></td>
-            <td>${p.nombre}</td>
-            <td>$${p.precio.toFixed(2)}</td>
-            <td>${p.stock}</td>
-            <td><em>${p.urlImagen || 'Pendiente por Leandro'}</em></td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>${p.sku}</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${p.nombre}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">$${p.precio.toFixed(2)}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${p.stock}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${contenidoImagen}</td>
         `;
         tbody.appendChild(fila);
     });
@@ -152,6 +222,7 @@ function limpiarStorage() {
     if (confirm("¿Seguro querés borrar todos los productos del localStorage?")) {
         localStorage.removeItem(STORAGE_KEY);
         renderizarTabla();
-        document.getElementById('mensajeEstado').innerText = "LocalStorage vaciado con éxito.";
+        document.getElementById('mensajeEstado').innerText = "";
+        document.getElementById('mensajeImagen').innerText = "LocalStorage vaciado con éxito.";
     }
 }
