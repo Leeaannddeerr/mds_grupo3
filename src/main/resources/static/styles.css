@@ -1,0 +1,341 @@
+/* Importación de fuentes sin cursiva (Geométricas y limpias) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700&display=swap');
+
+/* Variables de color de la marca */
+:root {
+    --color-fondo: #EFF6F5; /* Menta pastel muy claro (adiós al blanco aburrido) */
+    --color-texto: #1E293B; /* Azul pizarra muy oscuro para excelente lectura */
+    --color-principal: #00A896; /* Turquesa/Teal vibrante */
+    --color-principal-hover: #028C7D;
+    --color-secundario: #F25F5C; /* Coral intenso para contrastar */
+    --color-secundario-hover: #D9534F;
+    --color-borde: #CBD5E1; /* Un gris un poquito más marcado para resaltar sobre el nuevo fondo */
+    --color-caja-fondo: #FFFFFF; /* Las tarjetas se mantienen blancas para flotar sobre el fondo claro */
+}
+
+/* Reseteo general */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    margin: 0; 
+    padding: 0;
+    line-height: 1.5;
+}
+
+/* Tipografía de Títulos */
+h1, h2 {
+    font-family: 'Outfit', sans-serif;
+    color: var(--color-texto);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--color-principal);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--color-borde);
+    padding-bottom: 0.5rem;
+}
+
+/* Contenedores (Módulos) */
+.box {
+    background-color: var(--color-caja-fondo);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra más suave y artística */
+    border-top: 5px solid var(--color-principal);
+}
+
+/* Alternamos colores en los bordes superiores */
+.box:nth-child(even) {
+    border-top-color: var(--color-secundario);
+}
+
+/* Formularios e Inputs */
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.6rem;
+    margin: 0.5rem 0 1rem 0;
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    background-color: #FAFAFA;
+    transition: all 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--color-principal);
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.2);
+}
+
+label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Botones */
+.btn, button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    background-color: var(--color-principal);
+    color: white;
+    font-size: 0.95rem;
+}
+
+.btn:hover, button:hover {
+    background-color: var(--color-principal-hover);
+}
+
+.btn:active, button:active {
+    transform: scale(0.98);
+}
+
+/* Botones con funciones de peligro o borrado */
+#btnLimpiar,
+.btn-danger {
+    background-color: #EF4444;
+}
+
+#btnLimpiar:hover,
+.btn-danger:hover {
+    background-color: #DC2626;
+}
+
+/* Botones secundarios (Carga y Descarga) */
+#btnDescargarGeneral,
+#btnProcesar {
+    background-color: var(--color-secundario);
+}
+
+#btnDescargarGeneral:hover,
+#btnProcesar:hover {
+    background-color: var(--color-secundario-hover);
+}
+
+/* Cajas de búsqueda y edición */
+.acciones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.resultado-busqueda {
+    margin-top: 15px;
+    padding: 1.2rem;
+    background-color: var(--color-fondo); /* Usa el fondo menta suave por dentro */
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-principal);
+}
+
+/* Tabla de Productos */
+table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+    text-align: left;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead tr {
+    background-color: #E2ECEB; /* Un tono un poquito más oscuro que el fondo para el encabezado */
+    color: var(--color-texto);
+}
+
+th {
+    padding: 12px;
+    font-weight: 600;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-borde);
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background-color: #F8FAFA; /* Efecto hover sutil al pasar el mouse por la fila */
+}
+
+/* Imágenes miniatura */
+.img-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--color-borde);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+/* Mensajes de estado (Éxito o Error) */
+#mensajeEstado, #mensajeBusqueda {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Layout Dashboard (Grid) */
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 2rem; /* El espacio que le sacamos al body lo ponemos acá */
+}
+
+/* Header Artístico */
+.header-artistico {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    position: relative;
+}
+
+.header-artistico h1 {
+    text-align: left;
+    margin-bottom: 0;
+    display: inline-block;
+}
+
+/* Pincelada debajo del título */
+.header-artistico h1::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 6px;
+    background: var(--color-secundario);
+    margin-top: 5px;
+    border-radius: 3px;
+    transform: skewX(-15deg); /* Le da un efecto de trazo dinámico */
+}
+
+/* Responsividad para pantallas más chicas */
+@media (max-width: 900px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+}
+/* Zona Drag & Drop */
+.drop-zone {
+    border: 2px dashed var(--color-borde);
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    text-align: center;
+    background-color: var(--color-fondo);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    color: var(--color-texto);
+}
+
+.drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--color-principal);
+    background-color: #E2ECEB;
+    color: var(--color-principal);
+}
+/* Estilos de la Barra Superior (Navbar) */
+.navbar {
+    background-color: #1E3A8A; /* Azul corporativo profundo, como en la imagen */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+/* Filas con alertas (Falta imagen o bajo stock) */
+.fila-alerta {
+    background-color: #FEF2F2 !important; /* Rojizo muy suavecito */
+}
+
+.fila-alerta:hover {
+    background-color: #FEE2E2 !important; /* Un tono más oscuro al pasar el mouse */
+}
+
+/* Botón grande para sumar imagen faltante */
+.btn-plus {
+    background-color: transparent;
+    color: var(--color-secundario);
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 2px dashed var(--color-secundario);
+    border-radius: 6px;
+    width: 100%;
+    padding: 5px;
+}
+
+.btn-plus:hover {
+    background-color: var(--color-secundario);
+    color: white;
+}
+/* Botón Claro / Estético (Sin acción principal) */
+.btn-claro {
+    background-color: #E2ECEB; /* Menta grisáceo muy suave que combina con el fondo */
+    color: #0F766E; /* Texto en un tono Teal/Turquesa oscuro para que se lea perfecto */
+    border: 1px solid #99F6E4; /* Borde muy sutil para darle contorno */
+    box-shadow: none; /* Sin sombra para que se note que es una acción secundaria */
+}
+
+.btn-claro:hover {
+    background-color: #CCFBF1; /* Se ilumina un poquito al pasar el mouse */
+    color: #042F2E;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra suave al hacer hover */
+}
